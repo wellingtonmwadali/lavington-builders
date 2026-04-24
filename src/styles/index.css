@@ -67,3 +67,29 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Custom Typography & Hero Styles */
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #535353;
+}
+
+.hero-title {
+  font-size: 60px;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -1px;
+  color: #30373e;
+}
+
+.hero-title span {
+  color: #daa14c;
+}
+
+.hero-text {
+  font-size: 16px;
+  line-height: 1.5;
+  color: #535353;
+}
