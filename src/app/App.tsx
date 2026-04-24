@@ -4,12 +4,12 @@ import { Phone, Mail, MapPin, Menu, X, ArrowRight } from 'lucide-react';
 
 const PAGE_META: Record<string, { title: string; description: string }> = {
   home: {
-    title: 'Lavington Builders & Designers Company Limited | Premium Construction in Nairobi',
-    description: 'Lavington Builders & Designers Company Limited offers expert construction, plumbing, metal fabrication, security doors, internal decoration, window designs, and office finishing in Nairobi, Kenya.',
+    title: 'Lavington Builders & Designers Company Limited | Custom Furniture & Woodworks Nairobi',
+    description: 'Lavington Builders & Designers Company Limited specializes in custom furniture, woodworks, beds, seats, office furniture, stairs, plus full construction, plumbing, metal fabrication and finishing in Nairobi, Kenya.',
   },
   services: {
     title: 'Our Services | Lavington Builders & Designers Company Limited',
-    description: 'Explore our full range of services: general construction, modern plumbing, metal fabrication, wooden & metal security doors, internal decoration, putty-less window designs, and office finishing.',
+    description: 'Expert furniture making & woodworks — custom beds, seats, office furniture, stairs. Plus general construction, modern plumbing, metal fabrication, wooden & metal security doors, internal decoration, and office finishing.',
   },
   projects: {
     title: 'Projects | Lavington Builders & Designers Company Limited',
@@ -33,13 +33,13 @@ const EMAIL = 'lav4designs@gmail.com';
 const NAV_LINKS = ['HOME', 'SERVICES', 'PROJECTS', 'ABOUT', 'CONTACT'];
 
 const SERVICES = [
+  { icon: <svg className="w-9 h-9" viewBox="0 0 40 40" fill="none"><rect x="6" y="14" width="28" height="20" rx="2" stroke="currentColor" strokeWidth="2"/><path d="M6 18 L34 18 M10 24 L16 24 M24 24 L30 24" stroke="currentColor" strokeWidth="2"/><circle cx="10" cy="35" r="2" stroke="currentColor" strokeWidth="2"/><circle cx="30" cy="35" r="2" stroke="currentColor" strokeWidth="2"/></svg>, title: 'Custom Furniture & Woodworks', description: 'Bespoke furniture crafted to your specifications — beds, wardrobes, dining sets, office desks, kitchen cabinets, and storage solutions in premium hardwood and engineered wood.', caption: 'Quality furniture, built to last' },
+  { icon: <svg className="w-9 h-9" viewBox="0 0 40 40" fill="none"><path d="M8 28 L20 28 M8 28 L10 18 M20 28 L18 18 M10 18 L18 18 M14 18 L14 12 M10 12 L18 12 M32 24 L32 32 M28 32 L36 32 M28 28 L36 28" stroke="currentColor" strokeWidth="2"/></svg>, title: 'Seats, Sofas & Upholstery', description: 'Custom-made seats and sofas for homes and offices — choose your fabric, design, and comfort. Full upholstery and reupholstery services available.', caption: 'Comfort meets craftsmanship' },
+  { icon: <svg className="w-9 h-9" viewBox="0 0 40 40" fill="none"><rect x="6" y="18" width="28" height="14" rx="1" stroke="currentColor" strokeWidth="2"/><path d="M6 22 L34 22 M4 18 L4 14 M36 18 L36 14" stroke="currentColor" strokeWidth="2"/></svg>, title: 'Custom Beds & Bedroom Furniture', description: 'Premium bed frames, bedside tables, dressing tables, and wardrobes designed and built for comfort, style, and durability in any bedroom size.', caption: 'Rest easy with quality' },
+  { icon: <svg className="w-9 h-9" viewBox="0 0 40 40" fill="none"><rect x="6" y="8" width="28" height="28" rx="2" stroke="currentColor" strokeWidth="2"/><path d="M6 16 L34 16 M14 8 L14 36 M12 22 L18 22 M12 27 L22 27 M22 22 L28 22" stroke="currentColor" strokeWidth="2"/></svg>, title: 'Office Furniture & Workstations', description: 'Complete office furniture solutions — executive desks, workstations, filing cabinets, meeting tables, and reception counters for modern workspaces.', caption: 'Productivity by design' },
+  { icon: <svg className="w-9 h-9" viewBox="0 0 40 40" fill="none"><path d="M8 32 L16 24 L24 24 L32 16 M32 16 L32 22 M32 16 L26 16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><circle cx="8" cy="32" r="2" fill="currentColor"/><circle cx="32" cy="16" r="2" fill="currentColor"/></svg>, title: 'Wooden Stairs & Railings', description: 'Custom-designed wooden staircases, handrails, and balustrades — built for safety, elegance, and long-lasting durability in any home or office.', caption: 'Elevate your space' },
   { icon: <svg className="w-9 h-9" viewBox="0 0 40 40" fill="none"><rect x="5" y="8" width="30" height="24" stroke="currentColor" strokeWidth="2" rx="1"/><path d="M5 14 L35 14 M13 8 L13 32 M27 8 L27 32" stroke="currentColor" strokeWidth="2"/></svg>, title: 'General Construction & Home Repairs', description: 'Full-scope construction from foundations to finishing, plus reliable home repair and maintenance services across Nairobi.', caption: 'Build with confidence' },
-  { icon: <svg className="w-9 h-9" viewBox="0 0 40 40" fill="none"><path d="M20 8 L20 32 M14 14 C14 14 10 14 10 18 C10 22 14 22 14 22 L26 22 C26 22 30 22 30 18 C30 14 26 14 26 14" stroke="currentColor" strokeWidth="2"/><circle cx="20" cy="32" r="3" stroke="currentColor" strokeWidth="2"/></svg>, title: 'Modern Plumbing System', description: 'Installation, repair, and modernisation of plumbing systems for residential and commercial properties using quality materials.', caption: 'Reliable flow, every day' },
-  { icon: <svg className="w-9 h-9" viewBox="0 0 40 40" fill="none"><rect x="8" y="16" width="24" height="18" stroke="currentColor" strokeWidth="2"/><path d="M8 16 L20 8 L32 16 M16 34 L16 24 L24 24 L24 34" stroke="currentColor" strokeWidth="2"/></svg>, title: 'Metal Fabrication & Designs', description: 'Custom metalwork including gates, grilles, staircases, and structural steel — fabricated and installed to your exact specifications.', caption: 'Strength meets elegance' },
-  { icon: <svg className="w-9 h-9" viewBox="0 0 40 40" fill="none"><rect x="8" y="8" width="24" height="28" rx="1" stroke="currentColor" strokeWidth="2"/><path d="M8 18 L32 18 M8 28 L32 28 M20 8 L20 18 M20 28 L20 36" stroke="currentColor" strokeWidth="2"/><circle cx="27" cy="23" r="2" stroke="currentColor" strokeWidth="2"/></svg>, title: 'Wooden & Metal Security Doors', description: 'Durable, stylish security doors crafted from premium wood and steel — designed to enhance safety without compromising aesthetics.', caption: 'Secure your home in style' },
-  { icon: <svg className="w-9 h-9" viewBox="0 0 40 40" fill="none"><rect x="6" y="10" width="28" height="20" rx="2" stroke="currentColor" strokeWidth="2"/><path d="M6 16 L34 16 M10 16 L10 30 M30 16 L30 30" stroke="currentColor" strokeWidth="2"/><path d="M14 24 C14 24 17 21 20 24 C23 27 26 24 26 24" stroke="currentColor" strokeWidth="1.5"/></svg>, title: 'Internal Decoration', description: 'Transform interiors with expert decoration — wall finishes, ceilings, custom fixtures, and ambient lighting solutions.', caption: 'Beauty from the inside out' },
-  { icon: <svg className="w-9 h-9" viewBox="0 0 40 40" fill="none"><rect x="8" y="10" width="24" height="20" stroke="currentColor" strokeWidth="2" rx="1"/><path d="M8 14 L32 14 M8 26 L32 26 M14 10 L14 30 M26 10 L26 30" stroke="currentColor" strokeWidth="2"/></svg>, title: 'Putty-less Window Designs', description: 'Modern, maintenance-free window installations with clean aluminium and UPVC profiles — no putty, no cracking, no compromise.', caption: 'Crystal clear, frame perfect' },
-  { icon: <svg className="w-9 h-9" viewBox="0 0 40 40" fill="none"><rect x="6" y="8" width="28" height="28" rx="2" stroke="currentColor" strokeWidth="2"/><path d="M6 16 L34 16 M14 8 L14 36 M12 22 L18 22 M12 27 L22 27 M22 22 L28 22" stroke="currentColor" strokeWidth="2"/></svg>, title: 'General Office & Home Finishing', description: 'Complete interior and exterior finishing for offices and homes — tiling, painting, suspended ceilings, flooring, and all final touches.', caption: 'Perfection in every detail' },
+  { icon: <svg className="w-9 h-9" viewBox="0 0 40 40" fill="none"><rect x="8" y="8" width="24" height="28" rx="1" stroke="currentColor" strokeWidth="2"/><path d="M8 18 L32 18 M8 28 L32 28 M20 8 L20 18 M20 28 L20 36" stroke="currentColor" strokeWidth="2"/><circle cx="27" cy="23" r="2" stroke="currentColor" strokeWidth="2"/></svg>, title: 'Security Doors, Windows & Finishing', description: 'Wooden & metal security doors, putty-less windows, internal decoration, modern plumbing systems, metal fabrication, and complete office/home finishing.', caption: 'Complete solutions' },
 ];
 
 const PROJECTS = [
@@ -60,7 +60,7 @@ function TopBar() {
           <a href={`tel:${PHONE2.replace(/\s/g,'')}`} className="flex items-center gap-1.5 hover:text-[#D4896B] transition-colors"><Phone className="w-3.5 h-3.5" />{PHONE2}</a>
           <a href={`mailto:${EMAIL}`} className="hidden md:flex items-center gap-1.5 hover:text-[#D4896B] transition-colors"><Mail className="w-3.5 h-3.5" />{EMAIL}</a>
         </div>
-        <p className="text-gray-400 hidden sm:block text-[11px] tracking-wider">Building Excellence Across Kenya</p>
+        <p className="text-gray-400 hidden sm:block text-[11px] tracking-wider">Expert Furniture & Woodworks • Full Construction Services</p>
       </div>
     </div>
   );
@@ -122,7 +122,7 @@ function Footer({ onNav }: { onNav: (p: string) => void }) {
               <p className="text-xl font-black">{SHORT_NAME}</p>
               <p className="text-[9px] tracking-widest text-[#D4896B] font-bold uppercase">Builders &amp; Designers</p>
             </div>
-            <p className="text-gray-400 text-[13px] leading-relaxed mb-6">{COMPANY_NAME} — delivering construction excellence and innovative design solutions across Kenya.</p>
+            <p className="text-gray-400 text-[13px] leading-relaxed mb-6">{COMPANY_NAME} — specializing in custom furniture & woodworks, plus full construction and design services across Kenya.</p>
             <div className="space-y-2.5 text-[13px] text-gray-400">
               <p className="flex items-start gap-2"><Phone className="w-4 h-4 mt-0.5 text-[#D4896B] flex-shrink-0" />{PHONE1}</p>
               <p className="flex items-start gap-2"><Phone className="w-4 h-4 mt-0.5 text-[#D4896B] flex-shrink-0" />{PHONE2}</p>
@@ -229,8 +229,8 @@ function CTACardsAndServicesSection({ onNav }: { onNav: (p: string) => void }) {
             />
             <div className="absolute inset-0 bg-black/45" />
             <div className="absolute inset-0 flex flex-col justify-center items-start p-10 text-white">
-              <p className="text-[10px] tracking-[0.2em] text-[#D4896B] font-bold mb-2 uppercase">Our Expertise</p>
-              <h3 className="text-[26px] font-bold leading-tight mb-6">Choose a new<br />look for your<br />home</h3>
+              <p className="text-[10px] tracking-[0.2em] text-[#D4896B] font-bold mb-2 uppercase">Custom Furniture</p>
+              <h3 className="text-[26px] font-bold leading-tight mb-6">Furnish your<br />home with<br />custom pieces</h3>
               <button className="px-6 py-2.5 bg-[#D4896B] text-white rounded-full text-[13px] font-bold hover:bg-[#c27a5e] transition-colors flex items-center gap-2">
                 EXPLORE SERVICES <ArrowRight className="w-3.5 h-3.5" />
               </button>
@@ -258,7 +258,7 @@ function CTACardsAndServicesSection({ onNav }: { onNav: (p: string) => void }) {
         <div className="text-center mb-12">
           <p className="text-[#D4896B] text-[11px] tracking-[0.2em] font-bold mb-3 uppercase">What We Do</p>
           <h2 className="text-[32px] font-bold mb-4">Our Services</h2>
-          <p className="text-gray-500 text-[15px] max-w-xl mx-auto">Comprehensive construction and design solutions delivered with precision and care</p>
+          <p className="text-gray-500 text-[15px] max-w-xl mx-auto">Expert furniture making & woodworks — plus comprehensive construction and finishing solutions</p>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-6">
           {SERVICES.map(s => (
@@ -300,9 +300,9 @@ function HomePage({ onNav }: { onNav: (p: string) => void }) {
         <div className="max-w-[1400px] mx-auto px-8">
           <div className="grid lg:grid-cols-[1fr_1.1fr] gap-16 items-center">
             <div className="max-w-xl">
-              <p className="text-[#D4896B] text-[11px] tracking-[0.2em] font-bold mb-6 uppercase">Nairobi's Trusted Builders</p>
-              <h1 className="text-[56px] leading-[1.1] font-black mb-6">Build & design your <span className="text-[#D4896B]">dream</span> property with experts</h1>
-              <p className="text-gray-600 text-[16px] leading-relaxed mb-10 max-w-[480px]">{COMPANY_NAME} delivers premium construction, expert plumbing, custom metalwork, and stunning interior design across Nairobi and beyond.</p>
+              <p className="text-[#D4896B] text-[11px] tracking-[0.2em] font-bold mb-6 uppercase">Nairobi's Premier Furniture Makers</p>
+              <h1 className="text-[56px] leading-[1.1] font-black mb-6">Custom <span className="text-[#D4896B]">furniture & woodworks</span> for your home or office</h1>
+              <p className="text-gray-600 text-[16px] leading-relaxed mb-10 max-w-[480px]">Specializing in bespoke beds, seats, office furniture, stairs, and wood cabinets — plus full construction, plumbing, metalwork, and finishing services across Nairobi.</p>
               <div className="flex flex-wrap gap-4">
                 <button onClick={() => onNav('services')} className="px-8 py-4 bg-[#D4896B] text-white rounded-full text-[14px] font-bold hover:bg-[#c27a5e] transition-colors">Explore Services</button>
                 <button onClick={() => onNav('contact')} className="px-8 py-4 border-2 border-gray-900 text-gray-900 rounded-full text-[14px] font-bold hover:bg-gray-900 hover:text-white transition-colors">Book Consultation</button>
@@ -364,8 +364,8 @@ function HomePage({ onNav }: { onNav: (p: string) => void }) {
             </div>
             <div>
               <p className="text-[#D4896B] text-[11px] tracking-[0.2em] font-bold mb-6 uppercase">Why Choose Us</p>
-              <h2 className="text-[44px] font-black leading-[1.15] mb-6">Creative solutions<br />by professional<br />builders & designers</h2>
-              <p className="text-gray-600 text-[15px] leading-relaxed mb-8">With years of hands-on experience across Nairobi and Kenya, our team brings craftsmanship, creativity, and commitment to every project — from small home repairs to full commercial builds.</p>
+              <h2 className="text-[44px] font-black leading-[1.15] mb-6">Expert craftsmen<br />specializing in<br />furniture & woodworks</h2>
+              <p className="text-gray-600 text-[15px] leading-relaxed mb-8">From custom-made beds and office desks to beautiful wooden stairs and upholstered seats — our skilled artisans create furniture that combines functionality, beauty, and lasting quality. We also handle all your construction and finishing needs.</p>
               <div className="grid grid-cols-2 gap-6 mb-10">
                 {[{n:'500+',l:'Projects Done'},{n:'15+',l:'Years Experience'},{n:'7',l:'Core Services'},{n:'100%',l:'Client Satisfaction'}].map(s => (
                   <div key={s.l}><p className="text-[34px] font-black text-[#D4896B] leading-none">{s.n}</p><p className="text-gray-600 text-[13px] mt-1">{s.l}</p></div>
@@ -449,9 +449,9 @@ function HomePage({ onNav }: { onNav: (p: string) => void }) {
           <div className="absolute inset-0 bg-black/62" />
         </div>
         <div className="max-w-[1400px] mx-auto px-8 relative z-10 text-center text-white">
-          <p className="text-[#D4896B] text-[11px] tracking-[0.2em] font-bold mb-6 uppercase">Building With Heart</p>
-          <h2 className="text-[52px] font-black leading-[1.2] mb-4">Ready to build your<br />dream property?</h2>
-          <p className="text-gray-300 text-[16px] mb-10 max-w-lg mx-auto">Call us on {PHONE1} or {PHONE2} — we're ready to bring your vision to life.</p>
+          <p className="text-[#D4896B] text-[11px] tracking-[0.2em] font-bold mb-4 uppercase">Crafted With Care</p>
+          <h2 className="text-[52px] font-black leading-[1.2] mb-4">Ready for custom<br />furniture & woodworks?</h2>
+          <p className="text-gray-300 text-[16px] mb-10 max-w-lg mx-auto">From beds and seats to stairs and office furniture — call us on {PHONE1} or {PHONE2} for quality craftsmanship.</p>
           <div className="flex flex-wrap gap-4 justify-center">
             <button onClick={() => onNav('contact')} className="px-10 py-4 bg-[#D4896B] text-white rounded-full text-[14px] font-bold hover:bg-[#c27a5e] transition-colors">GET STARTED TODAY</button>
             <a href={`tel:${PHONE1.replace(/\s/g,'')}`} className="px-10 py-4 bg-white text-gray-900 rounded-full text-[14px] font-bold hover:bg-gray-100 transition-colors flex items-center gap-2"><Phone className="w-4 h-4" /> Call Now</a>
@@ -479,7 +479,7 @@ function ServicesPage({ onNav }: { onNav: (p: string) => void }) {
         <div className="max-w-[1400px] mx-auto px-8 relative z-10 text-white">
           <p className="text-[#D4896B] text-[11px] tracking-[0.2em] font-bold mb-4 uppercase">What We Offer</p>
           <h1 className="text-[60px] font-black leading-[1.1] mb-4">Our Services</h1>
-          <p className="text-gray-300 text-[17px] max-w-xl">From foundations to finishing touches — {COMPANY_NAME} covers every stage of your construction and design project.</p>
+          <p className="text-gray-300 text-[17px] max-w-xl">From custom furniture and woodworks to complete construction — {COMPANY_NAME} delivers expert craftsmanship across all your home and office needs.</p>
         </div>
       </section>
       <section className="bg-white py-20">
@@ -500,8 +500,8 @@ function ServicesPage({ onNav }: { onNav: (p: string) => void }) {
       <ShowroomTourSection onNav={onNav} />
       <section className="bg-[#fef9f6] py-20">
         <div className="max-w-[900px] mx-auto px-8 text-center">
-          <h2 className="text-[42px] font-black mb-6">Need a custom solution?</h2>
-          <p className="text-gray-600 text-[16px] leading-relaxed mb-10">Every project is unique. Contact us to discuss your specific requirements and receive a tailored quote.</p>
+          <h2 className="text-[42px] font-black mb-6">Need custom furniture or woodwork?</h2>
+          <p className="text-gray-600 text-[16px] leading-relaxed mb-10">Whether it's a bed, sofa, office desk, staircase, or full construction project — contact us to discuss your vision and receive a free, detailed quote.</p>
           <div className="flex flex-wrap gap-4 justify-center">
             <button onClick={() => onNav('contact')} className="px-8 py-4 bg-[#D4896B] text-white rounded-full text-[14px] font-bold hover:bg-[#c27a5e] transition-colors">Request a Quote</button>
             <a href={`tel:${PHONE1.replace(/\s/g,'')}`} className="px-8 py-4 border-2 border-gray-800 text-gray-800 rounded-full text-[14px] font-bold hover:bg-gray-800 hover:text-white transition-colors">{PHONE1}</a>
@@ -597,11 +597,11 @@ function AboutPage({ onNav }: { onNav: (p: string) => void }) {
           <div className="grid lg:grid-cols-2 gap-20 items-center">
             <div>
               <p className="text-[#D4896B] text-[11px] tracking-[0.2em] font-bold mb-6 uppercase">Our Story</p>
-              <h2 className="text-[44px] font-black leading-[1.2] mb-6">Built on trust,<br />delivered with pride</h2>
+              <h2 className="text-[44px] font-black leading-[1.2] mb-6">Crafted by hand,<br />built with passion</h2>
               <div className="space-y-5 text-gray-600 text-[15px] leading-relaxed">
-                <p>{COMPANY_NAME} was founded with a clear mission: to deliver high-quality, affordable construction and design services to homes and businesses across Nairobi.</p>
-                <p>We have grown steadily by earning the trust of our clients through transparent pricing, skilled workmanship, and genuine care for the spaces we help create. Every nail, pipe, and pane of glass reflects our commitment to excellence.</p>
-                <p>Today, our experienced team offers a comprehensive range of services — from general construction and plumbing to metal fabrication, interior decoration, security doors, and office finishing.</p>
+                <p>{COMPANY_NAME} specializes in custom furniture and woodworks — from elegant beds and comfortable sofas to functional office furniture, beautiful wooden stairs, and bespoke cabinetry. Every piece is crafted by skilled artisans who take pride in their work.</p>
+                <p>Our primary focus is furniture making and woodwork, where we transform premium hardwoods and engineered materials into functional art for homes and offices across Nairobi. Each piece is built to your exact specifications, ensuring perfect fit, finish, and durability.</p>
+                <p>Beyond furniture, we offer complete construction services — general building, modern plumbing, metal fabrication, security doors, windows, interior decoration, and full office/home finishing. One team, all your needs.</p>
               </div>
               <div className="mt-10 grid grid-cols-2 gap-8">
                 {[{n:'500+',l:'Projects Completed'},{n:'15+',l:'Years Experience'},{n:'7',l:'Core Services'},{n:'100%',l:'Client Commitment'}].map(s => (
