@@ -3,26 +3,31 @@ import { motion, AnimatePresence, useScroll, useTransform, useSpring, useMotionV
 import { ImageWithFallback } from './components/figma/ImageWithFallback';
 import { Phone, Mail, MapPin, Menu, X, ArrowRight } from 'lucide-react';
 
-const PAGE_META: Record<string, { title: string; description: string }> = {
+const PAGE_META: Record<string, { title: string; description: string; keywords: string }> = {
   home: {
     title: 'Lavington Builders & Designers Company Limited | Custom Furniture & Woodworks Nairobi',
     description: 'Lavington Builders & Designers Company Limited specializes in custom furniture, woodworks, beds, seats, office furniture, stairs, plus full construction, plumbing, metal fabrication and finishing in Nairobi, Kenya.',
+    keywords: 'custom furniture Nairobi, woodworks Kenya, furniture makers Nairobi, kitchen cabinets Nairobi, beds wardrobes Nairobi, interior design Nairobi, construction company Nairobi, Ngong Road builders Kenya',
   },
   services: {
     title: 'Our Services | Lavington Builders & Designers Company Limited',
     description: 'Expert furniture making & woodworks — custom beds, seats, office furniture, stairs. Plus general construction, modern plumbing, metal fabrication, wooden & metal security doors, internal decoration, and office finishing.',
+    keywords: 'custom furniture services Nairobi, woodwork services Kenya, interior design services Nairobi, general construction Nairobi, metal fabrication Kenya, security doors Nairobi, plumbing services Nairobi, wooden stairs Kenya',
   },
   projects: {
     title: 'Projects | Lavington Builders & Designers Company Limited',
     description: 'Browse completed and ongoing construction projects by Lavington Builders & Designers Company Limited — residential, commercial, and interior design work across Nairobi.',
+    keywords: 'construction projects Nairobi, furniture portfolio Kenya, interior design projects Nairobi, residential projects Kenya, commercial projects Nairobi, completed projects Lavington builders',
   },
   about: {
     title: 'About Us | Lavington Builders & Designers Company Limited',
     description: 'Learn about Lavington Builders & Designers Company Limited — our story, values, team, and commitment to building excellence in Kenya.',
+    keywords: 'about Lavington builders, construction company Nairobi history, furniture company Kenya, craftsmanship Nairobi, builders Ngong Road Nairobi',
   },
   contact: {
     title: 'Contact Us | Lavington Builders & Designers Company Limited',
-    description: 'Get in touch with Lavington Builders & Designers Company Limited. Call +254 722 863 577 or +254 710 105 029, or email lav4designs@gmail.com.',
+    description: 'Get in touch with Lavington Builders & Designers Company Limited on Ngong Road, Nairobi. Call +254 722 863 577 or +254 710 105 029, or email lav4designs@gmail.com.',
+    keywords: 'contact Lavington builders Nairobi, furniture company contact Kenya, builders Ngong Road Nairobi, +254722863577, lav4designs@gmail.com',
   },
 };
 
@@ -428,7 +433,7 @@ function Footer({ onNav }: { onNav: (p: string) => void }) {
               <p className="flex items-start gap-2"><Phone className="w-4 h-4 mt-0.5 text-[#D4896B] flex-shrink-0" />{PHONE1}</p>
               <p className="flex items-start gap-2"><Phone className="w-4 h-4 mt-0.5 text-[#D4896B] flex-shrink-0" />{PHONE2}</p>
               <p className="flex items-start gap-2"><Mail className="w-4 h-4 mt-0.5 text-[#D4896B] flex-shrink-0" />{EMAIL}</p>
-              <p className="flex items-start gap-2"><MapPin className="w-4 h-4 mt-0.5 text-[#D4896B] flex-shrink-0" />Lavington, Nairobi, Kenya</p>
+              <p className="flex items-start gap-2"><MapPin className="w-4 h-4 mt-0.5 text-[#D4896B] flex-shrink-0" />Ngong Road, Nairobi, Kenya</p>
             </div>
           </div>
           <div>
@@ -587,6 +592,76 @@ function CTACardsAndServicesSection({ onNav }: { onNav: (p: string) => void }) {
             </div>
           ))}
         </div>
+      </div>
+    </section>
+  );
+}
+
+/* ── PAGE HERO (inner pages) ── */
+function PageHero({
+  image,
+  eyebrow,
+  title,
+  description,
+}: {
+  image: string;
+  eyebrow: string;
+  title: string;
+  description: string;
+}) {
+  return (
+    <section className="relative min-h-[72vh] flex items-end overflow-hidden bg-[#0d0b09]">
+      {/* Ken Burns background */}
+      <motion.div
+        className="absolute inset-0"
+        initial={{ scale: 1.14 }}
+        animate={{ scale: 1.0 }}
+        transition={{ duration: 12, ease: 'linear' }}
+      >
+        <img
+          src={image}
+          alt={title}
+          className="w-full h-full object-cover"
+          loading="eager"
+          decoding="async"
+        />
+      </motion.div>
+
+      {/* Gradient overlays */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/88 via-black/40 to-black/15" />
+      <div className="absolute inset-0 bg-gradient-to-r from-black/55 via-transparent to-transparent" />
+
+      {/* Content */}
+      <div className="relative z-10 max-w-[1400px] mx-auto px-8 w-full pb-20 pt-48">
+        <motion.p
+          className="text-[#D4896B] text-[11px] tracking-[0.25em] font-bold mb-5 uppercase"
+          initial={{ opacity: 0, y: 18 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.55, delay: 0.1, ease: 'easeOut' }}
+        >
+          {eyebrow}
+        </motion.p>
+
+        <div className="overflow-hidden mb-6">
+          <motion.h1
+            className="text-[clamp(42px,6vw,82px)] font-black leading-[1.04] text-white"
+            initial={{ y: '105%' }}
+            animate={{ y: 0 }}
+            transition={{ duration: 0.9, delay: 0.18, ease: [0.16, 1, 0.3, 1] }}
+          >
+            {title}
+          </motion.h1>
+        </div>
+
+        <motion.p
+          className="text-white/60 text-[16px] max-w-[520px] leading-relaxed"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.45, ease: 'easeOut' }}
+        >
+          {description}
+        </motion.p>
+
       </div>
     </section>
   );
@@ -995,22 +1070,12 @@ function HomePage({ onNav }: { onNav: (p: string) => void }) {
 function ServicesPage({ onNav }: { onNav: (p: string) => void }) {
   return (
     <main>
-      <section className="relative py-28 overflow-hidden">
-        <div className="absolute inset-0">
-          <ImageWithFallback
-            src="/images/projects/lavington-builders-designers-metal-fabrication.jpg"
-            alt="Construction services by Lavington Builders & Designers Company Limited — general construction, plumbing, metalwork Nairobi"
-            title="Services — Lavington Builders & Designers Company Limited"
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-black/62" />
-        </div>
-        <div className="max-w-[1400px] mx-auto px-8 relative z-10 text-white">
-          <p className="text-[#D4896B] text-[11px] tracking-[0.2em] font-bold mb-4 uppercase">What We Offer</p>
-          <h1 className="text-[60px] font-black leading-[1.1] mb-4">Our Services</h1>
-          <p className="text-gray-300 text-[17px] max-w-xl">From custom furniture and woodworks to complete construction — {COMPANY_NAME} delivers expert craftsmanship across all your home and office needs.</p>
-        </div>
-      </section>
+      <PageHero
+        image="https://images.unsplash.com/photo-1687422810663-c316494f725a?auto=format&fit=crop&w=1920&q=85"
+        eyebrow="What We Offer"
+        title="Our Services"
+        description={`From custom furniture and woodworks to complete construction — ${COMPANY_NAME} delivers expert craftsmanship across all your home and office needs.`}
+      />
       <section className="bg-white py-20">
         <div className="max-w-[1400px] mx-auto px-8">
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
@@ -1048,22 +1113,12 @@ function ProjectsPage({ onNav }: { onNav: (p: string) => void }) {
   const filtered = filter === 'All' ? PROJECTS : PROJECTS.filter(p => p.tag === filter);
   return (
     <main>
-      <section className="relative py-28">
-        <div className="absolute inset-0">
-          <ImageWithFallback
-            src="/images/projects/lavington-builders-designers-stairs.jpg"
-            alt="Portfolio of completed construction projects by Lavington Builders & Designers Company Limited Nairobi Kenya"
-            title="Projects — Lavington Builders & Designers Company Limited"
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-black/62" />
-        </div>
-        <div className="max-w-[1400px] mx-auto px-8 relative z-10 text-white">
-          <p className="text-[#D4896B] text-[11px] tracking-[0.2em] font-bold mb-4 uppercase">Our Portfolio</p>
-          <h1 className="text-[60px] font-black leading-[1.1] mb-4">Projects</h1>
-          <p className="text-gray-300 text-[17px] max-w-xl">Explore completed projects showcasing our craftsmanship and dedication to quality across Nairobi.</p>
-        </div>
-      </section>
+      <PageHero
+        image="https://images.unsplash.com/photo-1611144727915-ef30a08aaeb3?auto=format&fit=crop&w=1920&q=85"
+        eyebrow="Our Portfolio"
+        title="Projects"
+        description="Explore completed projects showcasing our craftsmanship and dedication to quality across Nairobi."
+      />
       <ShowroomTourSection onNav={onNav} />
       <section className="bg-white py-20">
         <div className="max-w-[1400px] mx-auto px-8">
@@ -1105,22 +1160,12 @@ function ProjectsPage({ onNav }: { onNav: (p: string) => void }) {
 function AboutPage({ onNav }: { onNav: (p: string) => void }) {
   return (
     <main>
-      <section className="relative py-28">
-        <div className="absolute inset-0">
-          <ImageWithFallback
-            src="/images/projects/lavington-builders-designers-kitchen-interior-design.jpg"
-            alt="About Lavington Builders & Designers Company Limited — professional construction team Nairobi Kenya"
-            title="About Us — Lavington Builders & Designers Company Limited"
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-black/65" />
-        </div>
-        <div className="max-w-[1400px] mx-auto px-8 relative z-10 text-white">
-          <p className="text-[#D4896B] text-[11px] tracking-[0.2em] font-bold mb-4 uppercase">Who We Are</p>
-          <h1 className="text-[60px] font-black leading-[1.1] mb-4">About Us</h1>
-          <p className="text-gray-300 text-[17px] max-w-2xl">Building with excellence, designing with purpose — {COMPANY_NAME} is your trusted partner from concept to completion.</p>
-        </div>
-      </section>
+      <PageHero
+        image="https://images.unsplash.com/photo-1635039650095-38192b61520d?auto=format&fit=crop&w=1920&q=85"
+        eyebrow="Who We Are"
+        title="About Us"
+        description={`Building with excellence, designing with purpose — ${COMPANY_NAME} is your trusted partner from concept to completion.`}
+      />
       <section className="bg-white py-20">
         <div className="max-w-[1400px] mx-auto px-8">
           <div className="grid lg:grid-cols-2 gap-20 items-center">
@@ -1204,22 +1249,12 @@ function ContactPage() {
   const handleSubmit = () => { if(form.name && form.phone) setSent(true); };
   return (
     <main>
-      <section className="relative py-28">
-        <div className="absolute inset-0">
-          <ImageWithFallback
-            src="/images/projects/lavington-builders-designers-interior-design.jpg"
-            alt="Contact Lavington Builders & Designers Company Limited — call +254 722 863 577 or email lav4designs@gmail.com"
-            title="Contact Us — Lavington Builders & Designers Company Limited"
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-black/65" />
-        </div>
-        <div className="max-w-[1400px] mx-auto px-8 relative z-10 text-white">
-          <p className="text-[#D4896B] text-[11px] tracking-[0.2em] font-bold mb-4 uppercase">Reach Us</p>
-          <h1 className="text-[60px] font-black leading-[1.1] mb-4">Contact Us</h1>
-          <p className="text-gray-300 text-[17px] max-w-xl">We'd love to hear about your project. Call, email, or fill in the form below.</p>
-        </div>
-      </section>
+      <PageHero
+        image="https://images.unsplash.com/photo-1585523658894-cc78fc2c8f67?auto=format&fit=crop&w=1920&q=85"
+        eyebrow="Reach Us"
+        title="Contact Us"
+        description="We'd love to hear about your project. Call, email, or fill in the form below."
+      />
       <section className="bg-white py-20">
         <div className="max-w-[1400px] mx-auto px-8">
           <div className="grid lg:grid-cols-2 gap-20">
@@ -1230,7 +1265,7 @@ function ContactPage() {
                 {[
                   { icon:<Phone className="w-6 h-6 text-[#D4896B]"/>, label:'Phone', content:<><a href={`tel:${PHONE1.replace(/\s/g,'')}`} className="block text-gray-600 hover:text-[#D4896B] transition-colors text-[15px]">{PHONE1}</a><a href={`tel:${PHONE2.replace(/\s/g,'')}`} className="block text-gray-600 hover:text-[#D4896B] transition-colors text-[15px]">{PHONE2}</a></> },
                   { icon:<Mail className="w-6 h-6 text-[#D4896B]"/>, label:'Email', content:<a href={`mailto:${EMAIL}`} className="text-gray-600 hover:text-[#D4896B] transition-colors text-[15px]">{EMAIL}</a> },
-                  { icon:<MapPin className="w-6 h-6 text-[#D4896B]"/>, label:'Location', content:<><p className="text-gray-600 text-[15px]">Lavington, Nairobi, Kenya</p><p className="text-gray-500 text-[13px] mt-1">Serving all areas across Nairobi & beyond</p></> },
+                  { icon:<MapPin className="w-6 h-6 text-[#D4896B]"/>, label:'Location', content:<><p className="text-gray-600 text-[15px]">Ngong Road, Nairobi, Kenya</p><p className="text-gray-500 text-[13px] mt-1">Serving all areas across Nairobi & beyond</p></> },
                 ].map(item => (
                   <div key={item.label} className="flex items-start gap-5">
                     <div className="w-14 h-14 bg-[#fef9f6] rounded-xl flex items-center justify-center flex-shrink-0">{item.icon}</div>
@@ -1315,13 +1350,47 @@ export default function App() {
   }, []);
 
   const handleNav = (p: string) => { setPage(p); window.scrollTo({ top: 0, behavior: 'smooth' }); };
-  const meta = PAGE_META[page] || PAGE_META.home;
-  if (typeof document !== 'undefined') {
-    document.title = meta.title;
-    let m = document.querySelector('meta[name="description"]') as HTMLMetaElement|null;
-    if (!m) { m = document.createElement('meta') as HTMLMetaElement; m.name = 'description'; document.head.appendChild(m); }
-    m.content = meta.description;
-  }
+
+  // Update document meta tags on page change
+  useEffect(() => {
+    const pageMeta = PAGE_META[page] || PAGE_META.home;
+    const origin = window.location.origin;
+    const path = page === 'home' ? '' : `/${page}`;
+    const pageUrl = `${origin}${path}`;
+    const ogImage = `${origin}/images/projects/lavington-builders-designers-logo.png`;
+
+    const setMeta = (selector: string, attrName: string, attrValue: string, content: string) => {
+      let el = document.querySelector(selector) as HTMLMetaElement | null;
+      if (!el) {
+        el = document.createElement('meta') as HTMLMetaElement;
+        el.setAttribute(attrName, attrValue);
+        document.head.appendChild(el);
+      }
+      el.setAttribute('content', content);
+    };
+    const setLink = (rel: string, href: string) => {
+      let el = document.querySelector(`link[rel="${rel}"]`) as HTMLLinkElement | null;
+      if (!el) {
+        el = document.createElement('link') as HTMLLinkElement;
+        el.rel = rel;
+        document.head.appendChild(el);
+      }
+      el.href = href;
+    };
+
+    document.title = pageMeta.title;
+    setMeta('meta[name="description"]', 'name', 'description', pageMeta.description);
+    setMeta('meta[name="keywords"]', 'name', 'keywords', pageMeta.keywords);
+    setMeta('meta[property="og:title"]', 'property', 'og:title', pageMeta.title);
+    setMeta('meta[property="og:description"]', 'property', 'og:description', pageMeta.description);
+    setMeta('meta[property="og:url"]', 'property', 'og:url', pageUrl);
+    setMeta('meta[property="og:image"]', 'property', 'og:image', ogImage);
+    setMeta('meta[name="twitter:title"]', 'name', 'twitter:title', pageMeta.title);
+    setMeta('meta[name="twitter:description"]', 'name', 'twitter:description', pageMeta.description);
+    setMeta('meta[name="twitter:image"]', 'name', 'twitter:image', ogImage);
+    setLink('canonical', pageUrl);
+  }, [page]);
+
   return (
     <>
       {isLoading && (
@@ -1335,7 +1404,7 @@ export default function App() {
             />
           </div>
           <p className="text-[#D4896B] text-[11px] font-bold tracking-[0.2em] uppercase mb-2">Lavington Builders & Designers</p>
-          <p className="text-gray-300 text-[13px]">Preparing your interactive 3D project experience...</p>
+          <p className="text-gray-300 text-[13px]">Bespoke beds, wardrobes, dining sets, office desks, and kitchen cabinets — crafted by hand in premium hardwood for homes and offices...</p>
         </div>
       )}
       <div className="min-h-screen bg-white">
