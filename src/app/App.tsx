@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { motion, AnimatePresence, useScroll, useTransform, useSpring, useMotionValueEvent, MotionValue } from 'framer-motion';
 import { ImageWithFallback } from './components/figma/ImageWithFallback';
 import { Phone, Mail, MapPin, Menu, X, ArrowRight } from 'lucide-react';
 
@@ -50,6 +51,306 @@ const PROJECTS = [
   { img: '/images/projects/lavington-builders-designers-kitchen-interior-design.jpg', title: 'Parklands Plumbing Upgrade', sub: 'Modern Plumbing System | 2025', desc: 'Complete plumbing system overhaul and modernisation for a 20-unit apartment block in Parklands.', tag: 'Plumbing' },
   { img: '/images/projects/lavington-builders-designers-stairs.jpg', title: 'Kileleshwa Home Finishing', sub: 'Home Repairs & Finishing | 2026', desc: 'General home finishing and repairs including painting, flooring, ceiling work, and window replacement.', tag: 'Finishing' },
 ];
+
+const SLIDE_DURATION = 5000; // ms per slide
+
+const HERO_SLIDES = [
+  {
+    image: '/images/hero/lavington-builders-designers-kitchen-cabinets-interior-design.jpg',
+    eyebrow: "Nairobi's Premier Furniture Makers",
+    headlineParts: ['Custom', 'furniture &', 'woodworks'],
+    highlightIndex: 1,
+    body: 'Bespoke beds, wardrobes, dining sets, office desks, and kitchen cabinets — crafted by hand in premium hardwood for homes and offices across Nairobi.',
+    tag: 'Furniture & Woodworks',
+  },
+  {
+    image: '/images/hero/lavington-builders-designers-interior-design-kitchen-cabinets.jpg',
+    eyebrow: 'Interior Decoration Specialists',
+    headlineParts: ['Beautiful', 'interiors,', 'built for you'],
+    highlightIndex: 0,
+    body: 'Full interior design and decoration — ceilings, tiling, painting, custom cabinetry, and finishing that transforms every space.',
+    tag: 'Interior Design',
+  },
+  {
+    image: '/images/projects/lavington-builders-designers-interior-design.jpg',
+    eyebrow: 'Full Construction Services',
+    headlineParts: ['From', 'foundation', 'to finish'],
+    highlightIndex: 2,
+    body: 'General construction, plumbing, metalwork, security doors, and complete home or office finishing across Nairobi.',
+    tag: 'Construction',
+  },
+];
+
+const FEATURE_HIGHLIGHTS = [
+  {
+    title: 'Custom Furniture & Woodworks',
+    detail: 'Bespoke beds, wardrobes, dining sets, office desks, and kitchen cabinets — built to your exact specifications in premium hardwood.',
+    metric: 'Crafted to order',
+    image: '/images/projects/lavington-builders-designers-kitchen-cabinets-interior-design.jpg',
+  },
+  {
+    title: 'Interior Design & Decoration',
+    detail: 'Full interior decoration services for homes and offices — ceilings, tiling, painting, and finishing that transforms your space.',
+    metric: 'End-to-end finishing',
+    image: '/images/hero/lavington-builders-designers-interior-design-kitchen-cabinets.jpg',
+  },
+  {
+    title: 'Seats, Sofas & Upholstery',
+    detail: 'Custom-made seats and sofas for any space — choose your fabric, size, and comfort level. Full reupholstery also available.',
+    metric: 'Home & office ready',
+    image: '/images/projects/lavington-builders-designers-interior-design-furniture.jpg',
+  },
+  {
+    title: 'General Construction & Finishing',
+    detail: 'From foundations to final coat — construction, plumbing, metalwork, security doors, and complete home or office finishing across Nairobi.',
+    metric: '500+ projects done',
+    image: '/images/projects/lavington-builders-designers-office-interior.jpg',
+  },
+];
+
+const EXPERIENCE_SLIDES = [
+  {
+    title: 'Lavington Residence',
+    text: 'Complete 5-bedroom home construction including plumbing, metalwork, interior decoration, and putty-less windows — delivered on schedule.',
+    label: 'Residential • 2024',
+    image: '/images/projects/lavington-builders-designers-interior-design.jpg',
+  },
+  {
+    title: 'Metal Fabrication & Security',
+    text: 'Custom wooden and metal security doors, gates, and staircases — precision-fabricated and installed for lasting strength and style.',
+    label: 'Metalwork & Security',
+    image: '/images/projects/lavington-builders-designers-metal-fabrication.jpg',
+  },
+  {
+    title: 'Wooden Stairs & Railings',
+    text: 'Bespoke staircases, handrails, and balustrades handcrafted in premium hardwood — safe, elegant, and built to last.',
+    label: 'Woodworks • 2025',
+    image: '/images/projects/lavington-builders-designers-stairs.jpg',
+  },
+];
+
+function Interactive3DCard({
+  item,
+  index,
+  onClick,
+}: {
+  item: (typeof FEATURE_HIGHLIGHTS)[number];
+  index: number;
+  onClick: () => void;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+
+  // Track how far this card has scrolled into the viewport
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ['start 1.08', 'center 0.5'],
+  });
+
+  // Organic spring wrapping — settles quickly to avoid long-running animation ticks
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 120,
+    damping: 22,
+    restDelta: 0.001,
+  });
+
+  // Each card arrives from a unique 3D angle — motion-designer stagger
+  const startAngles: [number, number][] = [
+    [-24, -32], // card 0: top-left tilt
+    [-18,  28], // card 1: top-right tilt
+    [-24,  32], // card 2: mirror of 0
+    [-18, -28], // card 3: mirror of 1
+  ];
+  const [fromRX, fromRY] = startAngles[index % startAngles.length];
+
+  const rotateX = useTransform(smoothProgress, [0, 1], [fromRX, 0]);
+  const rotateY = useTransform(smoothProgress, [0, 1], [fromRY, 0]);
+  const y       = useTransform(smoothProgress, [0, 1], [80, 0]);
+  const scale   = useTransform(smoothProgress, [0, 1], [0.76, 1]);
+  const opacity = useTransform(smoothProgress, [0, 1], [0, 1]);
+
+  return (
+    <motion.div ref={ref} style={{ y, opacity }} className="group">
+      {/* Perspective wrapper — must be a separate element so overflow-hidden never kills 3D */}
+      <div style={{ perspective: '1100px' }} className="h-[320px]">
+        <motion.button
+          onClick={onClick}
+          className="relative w-full h-full rounded-2xl text-left block"
+          style={{ rotateX, rotateY, scale, transformStyle: 'preserve-3d' }}
+          whileHover={{
+            scale: 1.05,
+            transition: { type: 'spring', stiffness: 280, damping: 18 },
+          }}
+          aria-label={item.title}
+        >
+          {/* Inner clip — overflow-hidden here, NOT on the 3D element */}
+          <div className="absolute inset-0 rounded-2xl overflow-hidden">
+            <ImageWithFallback
+              src={item.image}
+              alt={item.title}
+              title={item.title}
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-br from-black/45 via-black/25 to-[#D4896B]/45" />
+          </div>
+          <div className="absolute inset-0 border border-white/25 rounded-2xl pointer-events-none" />
+          <div className="absolute left-5 right-5 bottom-5 z-10">
+            <p className="inline-flex mb-3 text-[10px] font-bold tracking-[0.17em] uppercase text-[#ffd8c7] bg-black/35 px-2 py-1 rounded-full">
+              {item.metric}
+            </p>
+            <h3 className="text-white text-[22px] font-black leading-tight mb-2">{item.title}</h3>
+            <p className="text-white/85 text-[13px] leading-relaxed">{item.detail}</p>
+          </div>
+          <div className="absolute -inset-1 bg-[#D4896B]/25 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+        </motion.button>
+      </div>
+    </motion.div>
+  );
+}
+
+/* Each carousel slide is its own component so hooks (useTransform/useSpring)
+   can be called at the top level — Rules of Hooks compliant. */
+function CarouselSlide({
+  slide,
+  idx,
+  activeProgress,
+}: {
+  slide: (typeof EXPERIENCE_SLIDES)[number];
+  idx: number;
+  activeProgress: MotionValue<number>;
+}) {
+  // Continuous fractional distance from the active centre position
+  const rawOffset = useTransform(activeProgress, (v) => idx - v);
+
+  // Map offset → visual transforms (offset 0 = centre, ±1 = adjacent)
+  const rawRotateY = useTransform(rawOffset, [-2, -1, 0, 1, 2], [18,  10, 0, -10, -18]);
+  const rawScale   = useTransform(rawOffset, [-2, -1, 0, 1, 2], [0.80, 0.90, 1.05, 0.90, 0.80]);
+  const rawOpacity = useTransform(rawOffset, [-2, -1, 0, 1, 2], [0.12, 0.50, 1,    0.50, 0.12]);
+  const rawX       = useTransform(rawOffset, [-2, -1, 0, 1, 2], [52,   14,  0,   -14,  -52]);
+
+  // Spring smoothing — gives organic, weighted momentum
+  const cfg = { stiffness: 130, damping: 26, mass: 0.85 };
+  const rotateY = useSpring(rawRotateY, cfg);
+  const scale   = useSpring(rawScale,   cfg);
+  const opacity = useSpring(rawOpacity, cfg);
+  const x       = useSpring(rawX,       cfg);
+
+  return (
+    <motion.div
+      className="relative h-[360px] rounded-2xl w-full flex-shrink-0"
+      style={{ rotateY, scale, opacity, x, transformStyle: 'preserve-3d', transformOrigin: 'center center' }}
+      aria-label={slide.title}
+    >
+      <div className="absolute inset-0 rounded-2xl overflow-hidden">
+        <ImageWithFallback src={slide.image} alt={slide.title} title={slide.title} className="w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+      </div>
+      <div className="absolute left-6 right-6 bottom-6 z-10">
+        <p className="text-[#ffd8c7] text-[11px] tracking-[0.15em] font-bold uppercase mb-2">{slide.label}</p>
+        <h3 className="text-white text-[24px] font-black mb-2">{slide.title}</h3>
+        <p className="text-gray-200 text-[13px] leading-relaxed">{slide.text}</p>
+      </div>
+    </motion.div>
+  );
+}
+
+function InteractiveExperienceCarousel({ onNav }: { onNav: (p: string) => void }) {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const [activeDot, setActiveDot] = useState(0);
+
+  // Scroll progress of the tall section drives everything
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start start', 'end end'],
+  });
+
+  // Continuous 0 → (N-1) value — the single source of truth for all slide positions
+  const activeProgress = useTransform(
+    scrollYProgress,
+    [0, 1],
+    [0, EXPERIENCE_SLIDES.length - 1],
+  );
+
+  // Sync to discrete dot indicator without causing slide re-renders
+  useMotionValueEvent(activeProgress, 'change', (v) => {
+    setActiveDot(Math.round(v));
+  });
+
+  // Progress bar driven purely by motion value — zero re-renders
+  const progressWidth = useTransform(scrollYProgress, [0, 1], ['0%', '100%']);
+
+  return (
+    <section
+      ref={sectionRef}
+      className="bg-[#151311] relative"
+      style={{ height: `${(EXPERIENCE_SLIDES.length + 1) * 100}vh` }}
+    >
+      {/* Sticky frame — pinned while the tall section scrolls past */}
+      <div className="sticky top-0 h-screen overflow-hidden flex flex-col justify-center">
+        <div className="max-w-[1400px] mx-auto px-8 w-full">
+
+          <div className="flex flex-wrap justify-between items-end gap-6 mb-10">
+            <div>
+              <motion.p
+                className="text-[#D4896B] text-[11px] tracking-[0.2em] font-bold mb-3 uppercase"
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, ease: 'easeOut' }}
+                viewport={{ once: true }}
+              >
+                Interactive Showcase
+              </motion.p>
+              <motion.h2
+                className="text-white text-[40px] font-black leading-[1.15] max-w-xl"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.08, ease: 'easeOut' }}
+                viewport={{ once: true }}
+              >
+                Explore our completed projects
+              </motion.h2>
+            </div>
+            <p className="text-white/35 text-[12px] tracking-wide hidden md:block">↓ Scroll to advance</p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6" style={{ perspective: '1400px' }}>
+            {EXPERIENCE_SLIDES.map((slide, idx) => (
+              <CarouselSlide
+                key={slide.title}
+                slide={slide}
+                idx={idx}
+                activeProgress={activeProgress}
+              />
+            ))}
+          </div>
+
+          <div className="mt-8 flex items-center justify-between gap-4 flex-wrap">
+            <div className="flex items-center gap-5">
+              <div className="flex gap-2">
+                {EXPERIENCE_SLIDES.map((slide, idx) => (
+                  <div
+                    key={slide.title}
+                    className={`h-2 rounded-full transition-all duration-500 ${activeDot === idx ? 'w-9 bg-[#D4896B]' : 'w-2 bg-white/30'}`}
+                  />
+                ))}
+              </div>
+              {/* Width driven by motion value — no React state, no re-render */}
+              <div className="w-32 h-[3px] bg-white/12 rounded-full overflow-hidden">
+                <motion.div className="h-full bg-[#D4896B] rounded-full" style={{ width: progressWidth }} />
+              </div>
+            </div>
+            <button
+              onClick={() => onNav('projects')}
+              className="px-7 py-3 bg-[#D4896B] text-white rounded-full text-[13px] font-bold hover:bg-[#c27a5e] transition-colors"
+            >
+              VIEW FULL PORTFOLIO
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  );
+}
 
 function TopBar() {
   return (
@@ -291,48 +592,276 @@ function CTACardsAndServicesSection({ onNav }: { onNav: (p: string) => void }) {
   );
 }
 
+/* ── HERO SECTION ── */
+function HeroSection({ onNav }: { onNav: (p: string) => void }) {
+  const [current, setCurrent] = useState(0);
+  const [direction, setDirection] = useState(1); // 1 = forward, -1 = backward
+
+  const goTo = (next: number) => {
+    const n = (next + HERO_SLIDES.length) % HERO_SLIDES.length;
+    setDirection(n === (current + 1) % HERO_SLIDES.length ? 1 : -1);
+    setCurrent(n);
+  };
+
+  // Always auto-advances — no pause on hover
+  useEffect(() => {
+    const id = window.setTimeout(() => {
+      setDirection(1);
+      setCurrent((c) => (c + 1) % HERO_SLIDES.length);
+    }, SLIDE_DURATION);
+    return () => clearTimeout(id);
+  }, [current]);
+
+  // Preload the next slide's image so the cross-fade has no blank frames
+  useEffect(() => {
+    const nextIndex = (current + 1) % HERO_SLIDES.length;
+    const img = new Image();
+    img.src = HERO_SLIDES[nextIndex].image;
+  }, [current]);
+
+  const slide = HERO_SLIDES[current];
+
+  return (
+    <section
+      className="relative w-full min-h-screen overflow-hidden bg-[#0d0b09] flex items-center"
+    >
+      {/* ── Background images: cross-fade + Ken Burns zoom ── */}
+      <AnimatePresence>
+        {HERO_SLIDES.map((s, i) =>
+          i === current ? (
+            <motion.div
+              key={s.image}
+              className="absolute inset-0"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 1.5, ease: 'easeInOut' }}
+            >
+              {/* Ken Burns: subtle zoom-out over full slide duration */}
+              <motion.div
+                className="absolute inset-0"
+                initial={{ scale: 1.18 }}
+                animate={{ scale: 1.0 }}
+                transition={{ duration: SLIDE_DURATION / 1000 + 2.5, ease: 'linear' }}
+              >
+                <ImageWithFallback
+                  src={s.image}
+                  alt={s.headlineParts.join(' ')}
+                  title={s.tag}
+                  className="w-full h-full object-cover"
+                />
+              </motion.div>
+              {/* Gradient vignettes */}
+              <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-black/10" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent" />
+            </motion.div>
+          ) : null,
+        )}
+      </AnimatePresence>
+
+      {/* ── Slide content ── */}
+      <div className="relative z-10 max-w-[1400px] mx-auto px-8 w-full py-36 lg:py-44">
+        <div className="max-w-[640px]">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={current}
+              className="flex flex-col"
+              initial={{ x: direction * 60 }}
+              animate={{ x: 0 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
+            >
+
+              {/* Eyebrow tag */}
+              <motion.p
+                className="text-[#D4896B] text-[11px] tracking-[0.25em] font-bold mb-7 uppercase"
+                initial={{ opacity: 0, y: 22 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.55, delay: 0.05, ease: 'easeOut' }}
+              >
+                {slide.eyebrow}
+              </motion.p>
+
+              {/* Headline — each line staggers in with a spring */}
+              <h1 className="text-[clamp(46px,6.5vw,88px)] leading-[1.04] font-black text-white mb-8">
+                {slide.headlineParts.map((part, i) => (
+                  <div key={`${current}-wrap-${i}`} className="overflow-hidden pb-1">
+                    <motion.span
+                      className={`block ${
+                        i === slide.highlightIndex ? 'text-[#D4896B]' : ''
+                      }`}
+                      initial={{ y: '110%' }}
+                      animate={{ y: 0 }}
+                      exit={{ y: '-85%', opacity: 0 }}
+                      transition={{
+                        duration: 0.95,
+                        delay: 0.08 + i * 0.14,
+                        ease: [0.16, 1, 0.3, 1],
+                      }}
+                    >
+                      {part}
+                    </motion.span>
+                  </div>
+                ))}
+              </h1>
+
+              {/* Body copy */}
+              <motion.p
+                className="text-white/65 text-[16px] leading-relaxed mb-10 max-w-[500px]"
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.65, delay: 0.55, ease: [0.22, 1, 0.36, 1] }}
+              >
+                {slide.body}
+              </motion.p>
+
+              {/* CTAs */}
+              <motion.div
+                className="flex flex-wrap gap-4"
+                initial={{ opacity: 0, y: 22 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.5, delay: 0.72, ease: 'easeOut' }}
+              >
+                <button
+                  onClick={() => onNav('services')}
+                  className="px-8 py-4 bg-[#D4896B] text-white rounded-full text-[14px] font-bold hover:bg-[#c27a5e] transition-colors"
+                >
+                  Explore Services
+                </button>
+                <button
+                  onClick={() => onNav('contact')}
+                  className="px-8 py-4 bg-white/15 text-white border border-white/30 rounded-full text-[14px] font-bold hover:bg-white/25 transition-colors"
+                >
+                  Book Consultation
+                </button>
+              </motion.div>
+
+            </motion.div>
+          </AnimatePresence>
+        </div>
+      </div>
+
+      {/* ── Bottom controls bar ── */}
+      <div className="absolute bottom-10 left-0 right-0 z-10">
+        <div className="max-w-[1400px] mx-auto px-8 flex items-center justify-between gap-6">
+
+          {/* Dots + timed progress + counter */}
+          <div className="flex items-center gap-5">
+            <div className="flex gap-2">
+              {HERO_SLIDES.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => goTo(i)}
+                  className={`h-[3px] rounded-full transition-all duration-500 ${
+                    i === current ? 'w-9 bg-[#D4896B]' : 'w-3 bg-white/35'
+                  }`}
+                  aria-label={`Go to slide ${i + 1}`}
+                />
+              ))}
+            </div>
+            {/* Progress bar — key resets animation each slide */}
+            <div className="w-24 h-[2px] bg-white/18 rounded-full overflow-hidden">
+              <motion.div
+                key={`prog-${current}`}
+                className="h-full bg-[#D4896B] origin-left"
+                initial={{ scaleX: 0 }}
+                animate={{ scaleX: 1 }}
+                transition={{ duration: SLIDE_DURATION / 1000, ease: 'linear' }}
+                style={{ transformOrigin: 'left center' }}
+              />
+            </div>
+            <span className="text-white/35 text-[12px] font-mono tabular-nums hidden sm:block">
+              {String(current + 1).padStart(2, '0')}&thinsp;/&thinsp;{String(HERO_SLIDES.length).padStart(2, '0')}
+            </span>
+          </div>
+
+          {/* Prev / Next */}
+          <div className="flex gap-3">
+            <button
+              onClick={() => goTo(current - 1)}
+              className="w-11 h-11 rounded-full border border-white/25 text-white flex items-center justify-center hover:bg-white hover:text-[#1a1a1a] transition-colors text-lg"
+              aria-label="Previous slide"
+            >←</button>
+            <button
+              onClick={() => goTo(current + 1)}
+              className="w-11 h-11 rounded-full border border-white/25 text-white flex items-center justify-center hover:bg-white hover:text-[#1a1a1a] transition-colors text-lg"
+              aria-label="Next slide"
+            >→</button>
+          </div>
+
+          {/* Stats badge */}
+          <motion.div
+            className="hidden md:block bg-white/12 border border-white/15 rounded-xl px-5 py-3"
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.7, ease: 'easeOut' }}
+          >
+            <p className="text-[28px] font-black text-[#D4896B] leading-none">500+</p>
+            <p className="text-white/55 text-[11px] font-semibold mt-0.5">Projects Completed</p>
+          </motion.div>
+        </div>
+      </div>
+
+      {/* ── Vertical slide rail — right edge on xl ── */}
+      <div className="absolute right-8 top-1/2 -translate-y-1/2 hidden xl:flex flex-col items-center gap-3 z-10">
+        {HERO_SLIDES.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => goTo(i)}
+            className={`rounded-full transition-all duration-500 ${
+              i === current ? 'w-[3px] h-12 bg-[#D4896B]' : 'w-[3px] h-4 bg-white/28'
+            }`}
+            aria-label={`Slide ${i + 1}`}
+          />
+        ))}
+      </div>
+    </section>
+  );
+}
+
 /* ── HOME PAGE ── */
 function HomePage({ onNav }: { onNav: (p: string) => void }) {
   return (
     <main>
-      {/* Hero */}
-      <section className="bg-white pt-20 pb-16">
+      <HeroSection onNav={onNav} />
+
+      <section className="bg-[#fff7f1] py-20">
         <div className="max-w-[1400px] mx-auto px-8">
-          <div className="grid lg:grid-cols-[1fr_1.1fr] gap-16 items-center">
-            <div className="max-w-xl">
-              <p className="text-[#D4896B] text-[11px] tracking-[0.2em] font-bold mb-6 uppercase">Nairobi's Premier Furniture Makers</p>
-              <h1 className="text-[56px] leading-[1.1] font-black mb-6">Custom <span className="text-[#D4896B]">furniture & woodworks</span> for your home or office</h1>
-              <p className="text-gray-600 text-[16px] leading-relaxed mb-10 max-w-[480px]">Specializing in bespoke beds, seats, office furniture, stairs, and wood cabinets — plus full construction, plumbing, metalwork, and finishing services across Nairobi.</p>
-              <div className="flex flex-wrap gap-4">
-                <button onClick={() => onNav('services')} className="px-8 py-4 bg-[#D4896B] text-white rounded-full text-[14px] font-bold hover:bg-[#c27a5e] transition-colors">Explore Services</button>
-                <button onClick={() => onNav('contact')} className="px-8 py-4 border-2 border-gray-900 text-gray-900 rounded-full text-[14px] font-bold hover:bg-gray-900 hover:text-white transition-colors">Book Consultation</button>
-              </div>
-            </div>
-            <div className="relative h-[520px]">
-              <div className="absolute left-0 top-0 w-[52%] h-full">
-                <ImageWithFallback
-                  src="/images/hero/lavington-builders-designers-kitchen-cabinets-interior-design.jpg"
-                  alt="Lavington Builders completed modern home — luxury interior with open plan design in Nairobi Kenya"
-                  title="Modern home construction by Lavington Builders & Designers Company Limited"
-                  className="w-full h-full object-cover rounded-xl"
-                />
-              </div>
-              <div className="absolute right-0 top-[80px] w-[52%] h-[calc(100%-80px)]">
-                <ImageWithFallback
-                  src="/images/hero/lavington-builders-designers-interior-design-kitchen-cabinets.jpg"
-                  alt="Premium interior decoration and finishing work by Lavington Builders & Designers Nairobi Kenya"
-                  title="Interior decoration and home finishing by Lavington Builders"
-                  className="w-full h-full object-cover rounded-xl"
-                />
-              </div>
-              <div className="absolute bottom-8 left-4 bg-white rounded-xl shadow-xl p-5 z-10">
-                <p className="text-[36px] font-black text-[#D4896B] leading-none">500+</p>
-                <p className="text-gray-600 text-[12px] font-semibold mt-1">Projects Completed</p>
-              </div>
-            </div>
+          <div className="text-center mb-12">
+            <motion.p
+              className="text-[#D4896B] text-[11px] tracking-[0.2em] font-bold mb-3 uppercase"
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.45, ease: 'easeOut' }}
+              viewport={{ once: true }}
+            >What We Do</motion.p>
+            <motion.h2
+              className="text-[44px] font-black leading-[1.15] mb-4"
+              initial={{ opacity: 0, y: 18 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.55, delay: 0.07, ease: 'easeOut' }}
+              viewport={{ once: true }}
+            >Our core services</motion.h2>
+            <motion.p
+              className="text-gray-600 text-[15px] max-w-2xl mx-auto"
+              initial={{ opacity: 0, y: 14 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.15, ease: 'easeOut' }}
+              viewport={{ once: true }}
+            >Custom furniture, woodworks, interior design, and full construction — scroll to reveal each card.</motion.p>
+          </div>
+          <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-6">
+            {FEATURE_HIGHLIGHTS.map((item, index) => (
+              <Interactive3DCard key={item.title} item={item} index={index} onClick={() => onNav('services')} />
+            ))}
           </div>
         </div>
       </section>
+
+      <InteractiveExperienceCarousel onNav={onNav} />
 
       <CTACardsAndServicesSection onNav={onNav} />
 
@@ -769,6 +1298,22 @@ function ContactPage() {
 /* ── ROOT ── */
 export default function App() {
   const [page, setPage] = useState<string>('home');
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const finishLoading = () => {
+      window.setTimeout(() => setIsLoading(false), 1100);
+    };
+
+    if (document.readyState === 'complete') {
+      finishLoading();
+    } else {
+      window.addEventListener('load', finishLoading);
+    }
+
+    return () => window.removeEventListener('load', finishLoading);
+  }, []);
+
   const handleNav = (p: string) => { setPage(p); window.scrollTo({ top: 0, behavior: 'smooth' }); };
   const meta = PAGE_META[page] || PAGE_META.home;
   if (typeof document !== 'undefined') {
@@ -778,15 +1323,31 @@ export default function App() {
     m.content = meta.description;
   }
   return (
-    <div className="min-h-screen bg-white">
-      <TopBar />
-      <Nav currentPage={page} onNav={handleNav} />
-      {page === 'home' && <HomePage onNav={handleNav} />}
-      {page === 'services' && <ServicesPage onNav={handleNav} />}
-      {page === 'projects' && <ProjectsPage onNav={handleNav} />}
-      {page === 'about' && <AboutPage onNav={handleNav} />}
-      {page === 'contact' && <ContactPage />}
-      <Footer onNav={handleNav} />
-    </div>
+    <>
+      {isLoading && (
+        <div className="fixed inset-0 z-[100] bg-[#120f0d] flex flex-col items-center justify-center text-center px-6">
+          <div className="relative w-[132px] h-[132px] rounded-full border border-white/15 flex items-center justify-center mb-6">
+            <div className="absolute inset-2 rounded-full border-2 border-transparent border-t-[#D4896B] animate-spin" />
+            <img
+              src="/images/projects/lavington-builders-designers-logo.png"
+              alt="Lavington Builders & Designers logo"
+              className="w-20 h-20 object-contain drop-shadow-[0_10px_25px_rgba(212,137,107,0.35)]"
+            />
+          </div>
+          <p className="text-[#D4896B] text-[11px] font-bold tracking-[0.2em] uppercase mb-2">Lavington Builders & Designers</p>
+          <p className="text-gray-300 text-[13px]">Preparing your interactive 3D project experience...</p>
+        </div>
+      )}
+      <div className="min-h-screen bg-white">
+        <TopBar />
+        <Nav currentPage={page} onNav={handleNav} />
+        {page === 'home' && <HomePage onNav={handleNav} />}
+        {page === 'services' && <ServicesPage onNav={handleNav} />}
+        {page === 'projects' && <ProjectsPage onNav={handleNav} />}
+        {page === 'about' && <AboutPage onNav={handleNav} />}
+        {page === 'contact' && <ContactPage />}
+        <Footer onNav={handleNav} />
+      </div>
+    </>
   );
 }
