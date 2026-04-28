@@ -1246,7 +1246,20 @@ function ContactPage() {
   const [form, setForm] = useState({ name:'', phone:'', email:'', service:'', message:'' });
   const [sent, setSent] = useState(false);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement>) => setForm(f=>({...f,[e.target.name]:e.target.value}));
-  const handleSubmit = () => { if(form.name && form.phone) setSent(true); };
+  const handleSubmit = () => {
+    if (!form.name || !form.phone) return;
+    const lines = [
+      `*New Enquiry — Lavington Builders*`,
+      ``,
+      `*Name:* ${form.name}`,
+      `*Phone:* ${form.phone}`,
+      form.email ? `*Email:* ${form.email}` : null,
+      form.service ? `*Service:* ${form.service}` : null,
+      form.message ? `*Message:* ${form.message}` : null,
+    ].filter(Boolean).join('\n');
+    window.open(`https://wa.me/254722863577?text=${encodeURIComponent(lines)}`, '_blank');
+    setSent(true);
+  };
   return (
     <main>
       <PageHero
