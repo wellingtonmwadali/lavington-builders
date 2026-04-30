@@ -944,27 +944,48 @@ function HomePage({ onNav }: { onNav: (p: string) => void }) {
       <section className="bg-white py-20">
         <div className="max-w-[1400px] mx-auto px-8">
           <div className="grid lg:grid-cols-2 gap-20 items-center">
-            <div className="grid grid-cols-[130px_1fr] gap-4">
-              <div className="space-y-4">
-                <ImageWithFallback
-                  src="/images/projects/lavington-builders-designers-kitchen-cabinets-interior-design.jpg"
-                  alt="Lavington Builders security door installation — wooden and metal doors Nairobi"
-                  title="Wooden & Metal Security Doors by Lavington Builders"
-                  className="w-full h-[130px] object-cover rounded-lg"
-                />
+            {/* Responsive image column: desktop = 2 stacked, mobile = 1 at a time */}
+            <div className="flex flex-col lg:flex-row gap-4 w-full">
+              {/* Two stacked images on desktop, one per row on mobile/tablet */}
+              <div className="flex flex-col gap-4 w-full lg:w-[38%]">
+                <div className="flex-1 min-h-0">
+                  <ImageWithFallback
+                    src="/images/projects/lavington-builders-designers-kitchen-cabinets-interior-design.jpg"
+                    alt="Lavington Builders security door installation — wooden and metal doors Nairobi"
+                    title="Wooden & Metal Security Doors by Lavington Builders"
+                    className="w-full h-full object-cover rounded-lg aspect-[4/3] lg:aspect-auto"
+                    style={{height:'100%'}}
+                  />
+                </div>
+                <div className="flex-1 min-h-0">
+                  <ImageWithFallback
+                    src="/images/projects/lavington-builders-designers-interior-design.jpg"
+                    alt="Lavington Builders metal fabrication — custom gates and grilles Nairobi Kenya"
+                    title="Metal Fabrication & Designs by Lavington Builders"
+                    className="w-full h-full object-cover rounded-lg aspect-[4/3] lg:aspect-auto"
+                    style={{height:'100%'}}
+                  />
+                </div>
+              </div>
+              {/* Tall image on the right (desktop), below on mobile */}
+              <div className="hidden lg:block w-[62%] h-full">
                 <ImageWithFallback
                   src="/images/projects/lavington-builders-designers-interior-design.jpg"
-                  alt="Lavington Builders metal fabrication — custom gates and grilles Nairobi Kenya"
-                  title="Metal Fabrication & Designs by Lavington Builders"
-                  className="w-full h-[130px] object-cover rounded-lg"
+                  alt="Professional construction and interior design by Lavington Builders & Designers Company Limited Nairobi"
+                  title="Creative interior solutions by Lavington Builders & Designers"
+                  className="w-full h-full object-cover rounded-xl"
+                  style={{height:'100%', minHeight:490}}
                 />
               </div>
-              <ImageWithFallback
-                src="/images/projects/lavington-builders-designers-interior-design.jpg"
-                alt="Professional construction and interior design by Lavington Builders & Designers Company Limited Nairobi"
-                title="Creative interior solutions by Lavington Builders & Designers"
-                className="w-full h-[490px] object-cover rounded-xl"
-              />
+              {/* On mobile/tablet, show the tall image as a separate row */}
+              <div className="block lg:hidden w-full">
+                <ImageWithFallback
+                  src="/images/projects/lavington-builders-designers-interior-design.jpg"
+                  alt="Professional construction and interior design by Lavington Builders & Designers Company Limited Nairobi"
+                  title="Creative interior solutions by Lavington Builders & Designers"
+                  className="w-full object-cover rounded-xl aspect-[4/3]"
+                />
+              </div>
             </div>
             <div>
               <p className="text-[#D4896B] text-[11px] tracking-[0.2em] font-bold mb-6 uppercase">Why Choose Us</p>
